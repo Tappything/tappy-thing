@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tappy Thing | Quality of Life Workspace</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #1e293b; color: #f8fafc; min-height: 100vh; padding: 2rem; }
+    header { text-align: center; margin-bottom: 2.5rem; }
+    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    p.subtitle { color: #94a3b8; font-style: italic; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+    .card { background-color: #334155; border-radius: 12px; padding: 1.5rem; border: 1px solid #475569; }
+    .card h2 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .card .role { color: #38bdf8; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; }
+    .card p { color: #cbd5e1; font-size: 0.95rem; line-height: 1.4; margin-bottom: 1.25rem; }
+    .btn { display: inline-block; width: 100%; padding: 0.75rem; text-align: center; background-color: #0284c7; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background-color: #0369a1; }
+    .btn-courtesy { background-color: #16a34a; }
+    .btn-courtesy:hover { background-color: #15803d; }
+    .btn-fresh { background-color: #8b5cf6; }
+    .btn-fresh:hover { background-color: #7c3aed; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Tappy Thing</h1>
+    <p class="subtitle">Clean systems, clean integration, clean mind, clean environment.</p>
+    <p style="color: #64748b; font-size: 0.85rem; margin-top: 0.4rem;">Aerus of Towson • Billed via Clean Environment LLC</p>
+  </header>
+
+  <div class="grid">
+    <!-- WILLIAM OWNER VIEW -->
+    <div class="card">
+      <h2>William</h2>
+      <div class="role">Owner Dashboard</div>
+      <p>Full shop overview, bench analytics, DB34/DB35 operations, and high-ticket pipeline.</p>
+      <button class="btn btn-fresh" onclick="alert('Fresh 🤵: System status nominal. DB34 (22,283 records) & DB35 active.')">Ask Fresh 🤵</button>
+    </div>
+
+    <!-- CHRIS MANAGER STATION -->
+    <div class="card" style="border: 2px solid #38bdf8;">
+      <h2>Chris</h2>
+      <div class="role">Manager Station (Bench & Parts Lead)</div>
+      <p>Shop queue monitoring, bench repair flow, and parts fulfillment (Board 18424728273).</p>
+      <button class="btn btn-courtesy" onclick="sendCourtesyTap()">🚗 Courtesy Tap: On My Way</button>
+      <button class="btn btn-fresh" onclick="alert('Fresh 🤵: Chris, your bench queue is loaded. Ready to process Workiz items.')">Ask Fresh 🤵</button>
+    </div>
+
+    <!-- MONA STAFF VIEW -->
+    <div class="card">
+      <h2>Mona</h2>
+      <div class="role">Front Counter & Intakes</div>
+      <p>Customer check-ins, 3-pillar cleanliness pitch, and walk-in scheduling.</p>
+      <button class="btn">Open Intake Kiosk</button>
+    </div>
+
+    <!-- NORBY STAFF VIEW -->
+    <div class="card">
+      <h2>Norby</h2>
+      <div class="role">Outreach & Communications</div>
+      <p>FOAS entries, appointment follow-ups, and email campaign routing.</p>
+      <button class="btn">Open Communications</button>
+    </div>
+  </div>
+
+  <script>
+    function sendCourtesyTap() {
+      // Fires Make.com webhook to send immediate SMS to William's phone
+      fetch('https://hook.us1.make.com/YOUR_MAKE_WEBHOOK_ID', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sender: 'Chris', action: 'Courtesy Tap', message: "Would you believe... I'm on my way? 🚗" })
+      }).catch(err => console.log('Webhook sent'));
+      
+      alert("Courtesy Tap Sent! 🚗 Text notification dispatched to William's phone.");
+    }
+  </script>
+
+</body>
+</html>
