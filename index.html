@@ -77,11 +77,12 @@
   
 
 <script>
-      const MONDAY_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJ0YWQiOjE4NDI0NzI4MjczLCJ1YW...";
+<script>
+      const MONDAY_API_KEY = "YOUR_MONDAY_API_KEY_HERE";
       const BOARD_ID = "18424728273";
 
-      async function triggerTap(actionName) {
-        const query = `mutation { create_item (board_id: ${BOARD_ID}, item_name: "${actionName}") { id } }`;
+      async function fetchBoardData() {
+        const query = `{ boards(ids: [${BOARD_ID}]) { items_page { items { id name status } } } }`;
         try {
           const res = await fetch("https://api.monday.com/v2", {
             method: "POST",
@@ -93,13 +94,12 @@
             body: JSON.stringify({ query })
           });
           const data = await res.json();
-          alert("✅ Live Tap Sent! Item ID: " + (data.data?.create_item?.id || "Created"));
+          console.log("Direct Monday Board Items Loaded:", data.data?.boards[0]?.items_page?.items);
         } catch (err) {
-          alert("❌ Error: " + err.message);
+          console.error("Monday API error:", err);
         }
       }
-
-      document.querySelector('.btn-courtesy')?.addEventListener('click', () => triggerTap("Courtesy Tap: On My Way - Chris"));
+      fetchBoardData();
     </script>
   </body>
 </html>
