@@ -64,21 +64,5 @@
     </div>
   </div>
 
-<div id="board-data" style="color:#cbd5e1; font-size:0.9rem; padding:1rem; background:#1e293b; border-radius:8px;">Loading live Monday items...</div>
-<script>
-  async function fetchBoard() {
-    try {
-      const res = await fetch("/.netlify/functions/monday");
-      const data = await res.json();
-      const items = data.data?.boards[0]?.items_page?.items || [];
-      document.getElementById("board-data").innerHTML = items.length 
-        ? items.map(i => `<div style="padding:6px 0; border-bottom:1px solid #334155;">• <strong>${i.name}</strong></div>`).join('')
-        : "No active items found.";
-    } catch (err) {
-      document.getElementById("board-data").innerText = "Error loading live Monday items.";
-    }
-  }
-  fetchBoard();
-</script>
-</body>
+<iframe src="https://towsonhealthyhomes.monday.com/boards/18424728273" width="100%" height="600px" style="border:none; border-radius:8px;"></iframe></body>
 </html>
