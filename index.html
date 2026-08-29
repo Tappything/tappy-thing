@@ -79,10 +79,9 @@
   
 
 <script>
-      const MONDAY_API_KEY = "YOUR_MONDAY_API_KEY_HERE";
+      const MONDAY_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJ0YWQiOjE4NDI0NzI4MjczLCJ1YW...";
       const BOARD_ID = "18424728273";
 
-      // 1. LIVE BUTTON TAP -> CREATES ITEM ON MONDAY BOARD
       async function triggerTap(actionName) {
         const query = `mutation { create_item (board_id: ${BOARD_ID}, item_name: "${actionName}") { id } }`;
         try {
@@ -96,13 +95,12 @@
             body: JSON.stringify({ query })
           });
           const data = await res.json();
-          alert("✅ Live Tap Sent to Monday.com! Item ID: " + (data.data?.create_item?.id || "Created"));
+          alert("✅ Live Tap Sent! Item ID: " + (data.data?.create_item?.id || "Created"));
         } catch (err) {
-          alert("❌ Connection Error: " + err.message);
+          alert("❌ Error: " + err.message);
         }
       }
 
-      // Connect button click
       document.querySelector('.btn-courtesy')?.addEventListener('click', () => triggerTap("Courtesy Tap: On My Way - Chris"));
     </script>
   </body>
