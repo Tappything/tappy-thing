@@ -1,5 +1,5 @@
 exports.handler = async function(event, context) {
-  const MONDAY_API_KEY = "YOUR_MONDAY_API_KEY_HERE"; // Replace with your token
+  const MONDAY_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjY5NzE5MzAyNCwiYWFpIjoxMSwidWlkIjoxMTIxOTkyOTgsImlhZCI6IjIwMjYtMDgtMjZUMTM6Mjc6MjAuMDAwWiIsInBlciI6Im1lOndyaXRlIiwiYWN0aWQiOjM2Mjk5NzMyLCJyZ24iOiJ1c2UxIn0.3_nQYGCIHBoJ73l81zUfp_TXNRqSMKMuDyDo3EvqFKo"; // Replace with your token
   const BOARD_ID = "18424728273";
 
   const query = `{ boards(ids: [${BOARD_ID}]) { items_page { items { id name status } } } }`;
