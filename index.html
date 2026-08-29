@@ -5,56 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tappy Thing | Quality of Life Workspace</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #1e293b; color: #f8fafc; min-height: 100vh; padding: 1.5rem; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: #1e293b; color: #f8fafc; min-height: 100vh; padding: 2rem; }
     header { text-align: center; margin-bottom: 1.5rem; }
     h1 { font-size: 2rem; margin-bottom: 0.25rem; }
     p.subtitle { color: #94a3b8; font-style: italic; margin-bottom: 1.5rem; }
-    
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; max-width: 1400px; margin: 0 auto 1.5rem auto; }
-    .card { background-color: #334155; border-radius: 12px; padding: 1rem; border: 1px solid #475569; }
-    .card h2 { font-size: 1.25rem; margin-bottom: 0.25rem; }
-    .card .role { color: #38bdf8; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .card p { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 1rem; }
-    
-    .btn { width: 100%; padding: 0.6rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; background-color: #0ea5e9; color: white; margin-bottom: 0.5rem; }
-    .btn-courtesy { background-color: #22c55e; }
-    .btn-fresh { background-color: #8b5cf6; }
-    
-    .board-container { max-width: 1400px; margin: 0 auto; background: #0f172a; border-radius: 12px; padding: 1rem; border: 1px solid #334155; }
-    .board-header { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; color: #38bdf8; }
-    iframe { width: 100%; height: 750px; border: none; border-radius: 8px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto 2rem auto; }
+    .card { background: #334155; border-radius: 12px; padding: 1.5rem; border: 1px solid #475569; }
+    .card h2 { color: #38bdf8; margin-bottom: 0.5rem; }
+    .role { font-size: 0.85rem; color: #cbd5e1; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+    p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.25rem; line-height: 1.4; }
+    .btn { background: #0ea5e9; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; cursor: pointer; width: 100%; text-align: center; }
+    .btn:hover { background: #0284c7; }
+    .board-container { background: #0f172a; border-radius: 12px; padding: 1.5rem; border: 1px solid #334155; max-width: 1200px; margin: 0 auto; }
+    .board-title { color: #38bdf8; font-size: 1.2rem; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
+    .item-row { padding: 0.75rem; border-bottom: 1px solid #1e293b; color: #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .item-row:last-child { border-bottom: none; }
   </style>
 </head>
 <body>
-
   <header>
     <h1>Tappy Thing Workspace</h1>
-    <p class="subtitle">Aerus Operations & Live Monday.com Command Center</p>
+    <p class="subtitle">Aerus Home Wellness Operations & Command Hub</p>
   </header>
 
   <div class="grid">
     <div class="card">
       <h2>William</h2>
       <div class="role">Owner Dashboard</div>
-      <p>Full shop overview, bench analytics, DB34/DB35 operations.</p>
-      <button class="btn btn-fresh" onclick="alert('Fresh 🧔: System status nominal. DB34 & DB35 active.')">Ask Fresh 🧔</button>
+      <p>Full shop overview, bench analytics, DB34/DB35 operations, and high-ticket pipeline.</p>
+      <button class="btn" onclick="alert('System status nominal. DB34/DB35 online.')">System Status</button>
     </div>
 
     <div class="card">
       <h2>Chris</h2>
       <div class="role">Manager Station (Bench & Parts Lead)</div>
-      <p>Shop queue monitoring, bench repair flow, and fulfillment.</p>
-      <button class="btn btn-courtesy" onclick="alert('Courtesy Tap Sent! 🚗 Notification logged.')">🚗 Courtesy Tap: On My Way</button>
-      <button class="btn btn-fresh" onclick="alert('Fresh 🧔: Bench queue loaded. Ready to process Workiz items.')">Ask Fresh 🧔</button>
+      <p>Shop queue monitoring, bench repair flow, and parts fulfillment (Board 18424728273).</p>
+      <button class="btn" onclick="alert('Bench queue loaded.')">Open Bench Queue</button>
     </div>
 
     <div class="card">
       <h2>Mona</h2>
       <div class="role">Front Counter & Intakes</div>
-      <p>Customer check-ins, 3-pillar pitch, and scheduling.</p>
-      <button class="btn">Open Intake Kiosk</button>
-</div>
+      <p>Customer check-ins, 3-pillar cleanliness pitch, and walk-in scheduling.</p>
+      <button class="btn" onclick="alert('Intake portal open.')">Open Intake Kiosk</button>
+    </div>
+
+    <div class="card">
+      <h2>Norby</h2>
+      <div class="role">Outreach & Communications</div>
+      <p>FOAS entries, appointment follow-ups, and email campaign routing.</p>
+      <button class="btn" onclick="alert('Communications active.')">Open Communications</button>
+    </div>
   </div>
-<iframe src="https://towsonhealthyhomes.monday.com/boards/18424728273" width="100%" height="600px" style="border:none; border-radius:8px;"></iframe></body>
-</html>
+
+  <div class="board-container">
+    <div class="board-title">Live Aerus Operations Board</div>
+    <div id="board-data">Loading live Monday items...</div>
+  </div>
+
+  <script>
+    async function fetchBoard() {
+      const container = document.getElementById("board-data");
+      try {
+        const
