@@ -3,69 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tappy Thing | Quality of Life Workspace</title>
+  <title>Tappy Thing | Aerus Command Hub</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    body { background-color: #1e293b; color: #f8fafc; min-height: 100vh; padding: 2rem; }
-    header { text-align: center; margin-bottom: 1.5rem; }
-    h1 { font-size: 2rem; margin-bottom: 0.25rem; }
-    p.subtitle { color: #94a3b8; font-style: italic; margin-bottom: 1.5rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto 2rem auto; }
-    .card { background: #334155; border-radius: 12px; padding: 1.5rem; border: 1px solid #475569; }
-    .card h2 { color: #38bdf8; margin-bottom: 0.5rem; }
-    .role { font-size: 0.85rem; color: #cbd5e1; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
-    p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.25rem; line-height: 1.4; }
-    .btn { background: #0ea5e9; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; cursor: pointer; width: 100%; text-align: center; }
-    .btn:hover { background: #0284c7; }
-    .board-container { background: #0f172a; border-radius: 12px; padding: 1.5rem; border: 1px solid #334155; max-width: 1200px; margin: 0 auto; }
-    .board-title { color: #38bdf8; font-size: 1.2rem; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
-    .item-row { padding: 0.75rem; border-bottom: 1px solid #1e293b; color: #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-    .item-row:last-child { border-bottom: none; }
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --accent-blue: #0284c7;
+      --accent-green: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; padding: 1.5rem; }
+    header { text-align: center; margin-bottom: 2rem; }
+    h1 { font-size: 2rem; color: var(--text-main); margin-bottom: 0.5rem; }
+    p.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; max-width: 1200px; margin: 0 auto 2rem auto; }
+    .card { background-color: var(--card-bg); border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; transition: transform 0.2s, border-color 0.2s; cursor: pointer; }
+    .card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+    .card h2 { font-size: 1.3rem; margin-bottom: 0.25rem; color: var(--text-main); }
+    .card p.role-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-blue); font-weight: 700; margin-bottom: 0.75rem; }
+    .card p.desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .btn { display: inline-block; width: 100%; padding: 0.75rem; background-color: var(--accent-blue); color: white; border: none; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer; }
+    .btn-camera { background-color: var(--accent-green); margin-top: 0.5rem; }
+    #camera-input { display: none; }
+    .task-container { max-width: 1200px; margin: 0 auto; background: var(--card-bg); border-radius: 12px; border: 1px solid #334155; padding: 1.5rem; display: none; }
+    .task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.75rem; }
+    .task-item { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; }
+    .task-item h4 { color: var(--text-main); margin-bottom: 0.25rem; }
+    .task-item p { color: var(--text-muted); font-size: 0.85rem; }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Tappy Thing Workspace</h1>
-    <p class="subtitle">Aerus Home Wellness Operations & Command Hub</p>
+    <p class="subtitle">Aerus Home Wellness & Water Operations Hub</p>
   </header>
 
   <div class="grid">
-    <div class="card">
+    <!-- William Card -->
+    <div class="card" onclick="loadRoleTasks('William')">
       <h2>William</h2>
-      <div class="role">Owner Dashboard</div>
-      <p>Full shop overview, bench analytics, DB34/DB35 operations, and high-ticket pipeline.</p>
-      <button class="btn" onclick="alert('System status nominal. DB34/DB35 online.')">System Status</button>
+      <p class="role-title">Command & Strategy</p>
+      <p class="desc">View all active board items across all operational stages.</p>
+      <button class="btn">View All Active Items</button>
     </div>
 
-    <div class="card">
+    <!-- Chris Card -->
+    <div class="card" onclick="loadRoleTasks('Chris')">
       <h2>Chris</h2>
-      <div class="role">Manager Station (Bench & Parts Lead)</div>
-      <p>Shop queue monitoring, bench repair flow, and parts fulfillment (Board 18424728273).</p>
-      <button class="btn" onclick="alert('Bench queue loaded.')">Open Bench Queue</button>
+      <p class="role-title">Bench & Parts Lead</p>
+      <p class="desc">Assigned repair tasks, bench queue, and part fulfillment.</p>
+      <button class="btn">View Chris Tasks</button>
+      <button class="btn btn-camera" onclick="event.stopPropagation(); triggerCamera();">📷 Intake Photo</button>
     </div>
 
-    <div class="card">
+    <!-- Mona Card -->
+    <div class="card" onclick="loadRoleTasks('Mona')">
       <h2>Mona</h2>
-      <div class="role">Front Counter & Intakes</div>
-      <p>Customer check-ins, 3-pillar cleanliness pitch, and walk-in scheduling.</p>
-      <button class="btn" onclick="alert('Intake portal open.')">Open Intake Kiosk</button>
+      <p class="role-title">Digital & Intakes</p>
+      <p class="desc">Customer intake cards, prompt logging, and direct tasks.</p>
+      <button class="btn">View Mona Tasks</button>
+      <button class="btn btn-camera" onclick="event.stopPropagation(); triggerCamera();">📷 Intake Photo</button>
     </div>
 
-    <div class="card">
+    <!-- Norby Card -->
+    <div class="card" onclick="loadRoleTasks('Norby')">
       <h2>Norby</h2>
-      <div class="role">Outreach & Communications</div>
-      <p>FOAS entries, appointment follow-ups, and email campaign routing.</p>
-      <button class="btn" onclick="alert('Communications active.')">Open Communications</button>
+      <p class="role-title">Outreach & FOAS</p>
+      <p class="desc">FOAS logging, customer outreach, and campaign follow-ups.</p>
+      <button class="btn">View Norby Tasks</button>
     </div>
   </div>
 
-  <div class="board-container">
-    <div class="board-title">Live Aerus Operations Board</div>
-    <div id="board-data">Loading live Monday items...</div>
+  <input type="file" id="camera-input" accept="image/*" capture="environment" onchange="handlePhoto(this)">
+
+  <div id="task-panel" class="task-container">
+    <div class="task-header">
+      <h3 id="panel-title">Active Items</h3>
+      <span style="color: var(--text-muted); cursor: pointer;" onclick="closePanel()">✕ Close</span>
+    </div>
+    <div id="task-list">Loading live items...</div>
   </div>
 
   <script>
-    async function fetchBoard() {
-      const container = document.getElementById("board-data");
+    const BOARD_ID = "18424728273";
+
+    function triggerCamera() {
+      document.getElementById('camera-input').click();
+    }
+
+    function handlePhoto(input) {
+      if (input.files && input.files[0]) {
+        alert('Photo captured: ' + input.files[0].name + '. Ready for Monday intake card attachment.');
+      }
+    }
+
+    function closePanel() {
+      document.getElementById('task-panel').style.display = 'none';
+    }
+
+    async function loadRoleTasks(role) {
+      const panel = document.getElementById('task-panel');
+      const title = document.getElementById('panel-title');
+      const list = document.getElementById('task-list');
+      
+      panel.style.display = 'block';
+      title.innerText = role === 'William' ? 'William — All Active Items' : `${role}'s Assigned Tasks`;
+      list.innerText = 'Fetching live data from Monday.com proxy...';
+
+      const query = `{
+        boards(ids: [${BOARD_ID}]) {
+          items_page(limit: 50) {
+            items {
+              id
+              name
+              state
+              column_values {
+                text
+                column { title }
+              }
+            }
+          }
+        }
+      }`;
+
       try {
-        const
+        const res = await fetch('/.netlify/functions/monday', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query })
+        });
+        const result = await res.json();
+        
+        if (!result.data || !result.data.boards) {
+          list.innerText = 'Error loading board data. Verify MONDAY_API_KEY in Netlify.';
+          return;
+        }
+
+        const items = result.data.boards[0].items_page.items;
+        list.innerHTML = '';
+
+        const filteredItems = items.filter(item => {
+          if (role === 'William') return true;
+          const assignedText = item.column_values.map(c => c.text).join(' ');
+          return assignedText.toLowerCase().includes(role.toLowerCase());
+        });
+
+        if (filteredItems.length === 0) {
+          list.innerHTML = `<p style="color: var(--text-muted)">No active items found for ${role}.</p>`;
+          return;
+        }
+
+        filteredItems.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'task-item';
+          div.innerHTML = `<h4>${item.name}</h4><p>Item ID: ${item.id}</p>`;
+          list.appendChild(div);
+        });
+
+      } catch (err) {
+        list.innerText = 'Failed to connect to proxy function: ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
