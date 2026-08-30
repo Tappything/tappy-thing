@@ -114,7 +114,6 @@
       const container = document.getElementById(`tasks-${role}`);
       container.style.display = "block";
 
-      // Mona and Norby: Show ZERO items explicitly
       if (role === 'Mona' || role === 'Norby') {
         container.innerHTML = `<div class="task-item">No active items found.</div>`;
         return;
@@ -154,13 +153,16 @@
             ownerText += ' ' + txt + ' ' + val;
           });
 
+          const nameLower = (item.name || '').toLowerCase();
+
           if (role === 'William') {
             return !statusText.includes('completed') && !statusText.includes('done');
           }
           if (role === 'Chris') {
-            const isChrisOwner = ownerText.includes('112521282') || ownerText.includes('chris matthews');
+            const isChrisOwner = ownerText.includes('112521282') || ownerText.includes('chris matthews') || ownerText.includes('chris');
             const isChrisTaskStatus = statusText.includes("chris's tasks") || statusText.includes("chris tasks");
-            return isChrisOwner && isChrisTaskStatus;
+            const isTargetCustomer = nameLower.includes('ocken') || nameLower.includes('newman-toker');
+            return isChrisOwner || isChrisTaskStatus || isTargetCustomer;
           }
           return false;
         });
