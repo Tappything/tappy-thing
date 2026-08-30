@@ -5,11 +5,209 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tappy Thing | Aerus Command Hub</title>
   <style>
-    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #0f172a; }
-    iframe { width: 100%; height: 100vh; border: none; }
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --accent-blue: #38bdf8;
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+    }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      margin: 0 0 8px 0;
+      font-size: 2rem;
+      color: var(--accent-blue);
+    }
+    .header p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto 32px auto;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card h2 {
+      margin: 0 0 8px 0;
+      font-size: 1.4rem;
+    }
+    .card p {
+      margin: 0 0 16px 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .btn {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn:hover {
+      background: #0369a1;
+    }
+    .btn-file {
+      background: #16a34a;
+      margin-top: 8px;
+    }
+    .btn-file:hover {
+      background: #15803d;
+    }
+    #output-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      display: none;
+    }
+    #output-title {
+      margin-top: 0;
+      color: var(--accent-blue);
+    }
+    .item-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .item-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
-  <iframe src="https://view.monday.com/embed/18424728273-049ed67bfdfa58f4c454747a164b86c2"></iframe>
+
+  <div class="header">
+    <h1>Tappy Thing</h1>
+    <p>Aerus Command Hub & Role Portal</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div>
+        <h2>William</h2>
+        <p>Command & Strategy Lead</p>
+      </div>
+      <button class="btn" onclick="fetchBoardData('William')">View Active Tasks</button>
+    </div>
+
+    <div class="card">
+      <div>
+        <h2>Chris</h2>
+        <p>Bench, Parts & Repair Lead</p>
+      </div>
+      <button class="btn" onclick="fetchBoardData('Chris')">View Active Tasks</button>
+      <input type="file" id="chris-file" accept="image/*" capture="environment" style="display:none">
+      <button class="btn btn-file" onclick="document.getElementById('chris-file').click()">Intake Photo</button>
+    </div>
+
+    <div class="card">
+      <div>
+        <h2>Mona</h2>
+        <p>Digital, Intakes & Audio Prompting</p>
+      </div>
+      <button class="btn" onclick="fetchBoardData('Mona')">View Active Tasks</button>
+    </div>
+
+    <div class="card">
+      <div>
+        <h2>Norby</h2>
+        <p>FOAS Entry & Customer Outreach</p>
+      </div>
+      <button class="btn" onclick="fetchBoardData('Norby')">View Active Tasks</button>
+    </div>
+  </div>
+
+  <div id="output-section">
+    <h3 id="output-title">Active Board Items</h3>
+    <ul class="item-list" id="item-list"></ul>
+  </div>
+
+  <script>
+    async function fetchBoardData(roleName) {
+      const outputSection = document.getElementById('output-section');
+      const outputTitle = document.getElementById('output-title');
+      const itemList = document.getElementById('item-list');
+
+      outputSection.style.display = 'block';
+      outputTitle.innerText = `Loading Board Data for ${roleName}...`;
+      itemList.innerHTML = '';
+
+      const mondayKey = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjY5NzE5MzAyNCwiYWFpIjoxMSwidWlkIjoxMTIxOTkyOTgsImlhZCI6IjIwMjYtMDgtMjZUMTM6Mjc6MjAuMDAwWiIsInBlciI6Im1lOndyaXRlIiwiYWN0aWQiOjM2Mjk5NzMyLCJyZ24iOiJ1c2UxIn0.3_nQYGCIHBoJ73l81zUfp_TXNRqSMKMuDyDo3EvqFKo";
+      const targetUrl = 'https://api.monday.com/v2';
+      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
+
+      const query = `query {
+        boards(ids: 18424728273) {
+          items_page(limit: 25) {
+            items {
+              id
+              name
+              state
+            }
+          }
+        }
+      }`;
+
+      try {
+        const response = await fetch(proxyUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': mondayKey
+          },
+          body: JSON.stringify({ query: query })
+        });
+
+        const data = await response.json();
+        const items = data?.data?.boards?.[0]?.items_page?.items || [];
+
+        outputTitle.innerText = `${roleName} — Active Board Items (${items.length})`;
+
+        if (items.length === 0) {
+          itemList.innerHTML = '<li class="item-card">No active items found on board 18424728273.</li>';
+        } else {
+          itemList.innerHTML = items.map(item => `
+            <li class="item-card">
+              <strong>${item.name}</strong> <span style="color:#94a3b8; font-size:0.85rem;">(ID: ${item.id})</span>
+            </li>
+          `).join('');
+        }
+      } catch (err) {
+        outputTitle.innerText = `Error Loading Items for ${roleName}`;
+        itemList.innerHTML = `<li class="item-card" style="color:#ef4444;">Error: ${err.message}</li>`;
+      }
+    }
+  </script>
 </body>
 </html>
