@@ -19,6 +19,9 @@
     .btn.green:hover { background: #15803d; }
     .btn.gold { background: #d97706; color: white; }
     .btn.gold:hover { background: #b45309; }
+    .intake-box { display: none; margin-top: 10px; padding: 10px; background: #0f172a; border-radius: 8px; border: 1px solid #334155; }
+    .intake-box input[type="text"] { width: 100%; padding: 8px; margin-bottom: 8px; border-radius: 4px; border: 1px solid #334155; background: #1e293b; color: #fff; }
+    .intake-box input[type="file"] { margin-bottom: 8px; color: #cbd5e1; font-size: 0.8rem; }
     .task-list { margin-top: 12px; max-height: 250px; overflow-y: auto; display: none; background: #0f172a; border-radius: 6px; padding: 8px; }
     .task-item { padding: 8px; border-bottom: 1px solid #334155; font-size: 0.85rem; color: #cbd5e1; }
     .task-item:last-child { border-bottom: none; }
@@ -36,6 +39,12 @@
       <h2>William</h2>
       <p class="role">Command & Strategy Lead</p>
       <button class="btn" onclick="fetchTasks('William')">View Active Tasks</button>
+      <button class="btn green" onclick="toggleIntake('William')">📷 Mobile Intake</button>
+      <div id="intake-William" class="intake-box">
+        <input type="text" id="name-William" placeholder="Customer Name">
+        <input type="file" id="file-William" accept="image/*" capture="environment">
+        <button class="btn green" onclick="submitIntake('William')">Submit Intake</button>
+      </div>
       <a href="https://gemini.google.com" target="_blank" class="btn green">Fresh 🤵</a>
       <a href="https://towsonhealthyhomes.monday.com/boards/18424728273" target="_blank" class="btn gold">Sissy 💛</a>
       <div id="tasks-William" class="task-list"></div>
@@ -45,6 +54,12 @@
       <h2>Chris</h2>
       <p class="role">Bench, Parts & Repair Lead</p>
       <button class="btn" onclick="fetchTasks('Chris')">View Active Tasks</button>
+      <button class="btn green" onclick="toggleIntake('Chris')">📷 Bench Intake</button>
+      <div id="intake-Chris" class="intake-box">
+        <input type="text" id="name-Chris" placeholder="Customer Name">
+        <input type="file" id="file-Chris" accept="image/*" capture="environment">
+        <button class="btn green" onclick="submitIntake('Chris')">Submit Intake</button>
+      </div>
       <a href="https://gemini.google.com" target="_blank" class="btn green">Fresh 🤵</a>
       <div id="tasks-Chris" class="task-list"></div>
     </div>
@@ -53,6 +68,12 @@
       <h2>Mona</h2>
       <p class="role">Digital, Intakes & Audio Prompting</p>
       <button class="btn" onclick="fetchTasks('Mona')">View Active Tasks</button>
+      <button class="btn green" onclick="toggleIntake('Mona')">📷 Counter Intake</button>
+      <div id="intake-Mona" class="intake-box">
+        <input type="text" id="name-Mona" placeholder="Customer Name">
+        <input type="file" id="file-Mona" accept="image/*" capture="environment">
+        <button class="btn green" onclick="submitIntake('Mona')">Submit Intake</button>
+      </div>
       <a href="https://gemini.google.com" target="_blank" class="btn green">Fresh 🤵</a>
       <div id="tasks-Mona" class="task-list"></div>
     </div>
@@ -69,12 +90,30 @@
   <script>
     const WORKER_URL = "https://square-wildflower-1c4a.william-f4c.workers.dev";
     const BOARD_ID = 18424728273;
+    const INTAKE_EMAIL = "board-18424728273@use1.monday.com";
+
+    function toggleIntake(role) {
+      const box = document.getElementById(`intake-${role}`);
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    function submitIntake(role) {
+      const name = document.getElementById(`name-${role}`).value;
+      if (!name) return alert("Please enter customer name.");
+      
+      const subject = encodeURIComponent(`Intake: ${name}`);
+      const body = encodeURIComponent(`New intake form submitted for ${name} via ${role} Portal.`);
+      
+      window.location.href = `mailto:${INTAKE_EMAIL}?subject=${subject}&body=${body}`;
+      
+      document.getElementById(`name-${role}`).value = '';
+      toggleIntake(role);
+    }
 
     async function fetchTasks(role) {
       const container = document.getElementById(`tasks-${role}`);
       container.style.display = "block";
 
-      // Mona's Filter: Show ZERO tasks strictly
       if (role === 'Mona') {
         container.innerHTML = `<div class="task-item">No active items found.</div>`;
         return;
@@ -114,17 +153,16 @@
             ownerText += ' ' + txt + ' ' + val;
           });
 
-          const fullString = (item.name + ' ' + statusText + ' ' + ownerText).toLowerCase();
-
           if (role === 'William') {
             return !statusText.includes('completed') && !statusText.includes('done');
           }
           if (role === 'Chris') {
-            // Include Person ID 112521282, explicit name match, AND "Chris's Tasks" status explicitly (catches Julie Newman-Toker & Jenny Ocken)
-            return ownerText.includes('112521282') || ownerText.includes('chris matthews') || ownerText.includes('chris') || statusText.includes("chris's tasks");
+            const isChrisOwner = ownerText.includes('112521282') || ownerText.includes('chris matthews') || ownerText.includes('chris');
+            const isChrisTaskStatus = statusText.includes("chris's tasks") || statusText.includes("chris tasks");
+            return isChrisOwner && isChrisTaskStatus;
           }
           if (role === 'Norby') {
-            return ownerText.includes('norby') || fullString.includes('norby');
+            return ownerText.includes('norby');
           }
           return true;
         });
