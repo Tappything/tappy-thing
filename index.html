@@ -73,6 +73,13 @@
     async function fetchTasks(role) {
       const container = document.getElementById(`tasks-${role}`);
       container.style.display = "block";
+
+      // Mona's Filter: Show ZERO tasks strictly
+      if (role === 'Mona') {
+        container.innerHTML = `<div class="task-item">No active items found.</div>`;
+        return;
+      }
+
       container.innerHTML = `<div class="loading">Loading tasks...</div>`;
 
       const graphqlQuery = {
@@ -103,12 +110,8 @@
             const val = (col.value || '').toLowerCase();
             const txt = (col.text || '').toLowerCase();
 
-            if (col.id.includes('status') || txt.includes('completed') || txt.includes('intake') || txt.includes('ready wall')) {
-              statusText += ' ' + txt;
-            }
-            if (col.id.includes('person') || col.id.includes('owner') || val.includes('112521282') || txt.includes('chris') || txt.includes('norby')) {
-              ownerText += ' ' + txt + ' ' + val;
-            }
+            statusText += ' ' + txt;
+            ownerText += ' ' + txt + ' ' + val;
           });
 
           const fullString = (item.name + ' ' + statusText + ' ' + ownerText).toLowerCase();
@@ -117,10 +120,8 @@
             return !statusText.includes('completed') && !statusText.includes('done');
           }
           if (role === 'Chris') {
-            return ownerText.includes('112521282') || ownerText.includes('chris matthews') || ownerText.includes('chris');
-          }
-          if (role === 'Mona') {
-            return statusText.includes('intake') || statusText.includes('ready wall') || fullString.includes('intake') || fullString.includes('ready wall');
+            // Include Person ID 112521282, explicit name match, AND "Chris's Tasks" status explicitly (catches Julie Newman-Toker & Jenny Ocken)
+            return ownerText.includes('112521282') || ownerText.includes('chris matthews') || ownerText.includes('chris') || statusText.includes("chris's tasks");
           }
           if (role === 'Norby') {
             return ownerText.includes('norby') || fullString.includes('norby');
