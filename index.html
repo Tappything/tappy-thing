@@ -3,156 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tappy Thing | Aerus Command Hub</title>
+  <title>Tappy Thing - Aerus Command Hub</title>
   <style>
-    :root {
-      --bg-dark: #0f172a;
-      --card-bg: #1e293b;
-      --accent-blue: #38bdf8;
-      --text-light: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #334155;
-    }
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-    }
-    .header { text-align: center; margin-bottom: 32px; }
-    .header h1 { margin: 0 0 8px 0; font-size: 2rem; color: var(--accent-blue); }
-    .header p { margin: 0; color: var(--text-muted); }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: 0 auto 32px auto;
-    }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .card h2 { margin: 0 0 4px 0; font-size: 1.4rem; }
-    .card p { margin: 0 0 16px 0; font-size: 0.9rem; color: var(--text-muted); }
-    .btn {
-      background: #0284c7;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; padding: 20px; min-height: 100vh; }
+    h1 { text-align: center; margin-bottom: 8px; color: #38bdf8; font-size: 1.8rem; }
+    p.sub { text-align: center; color: #94a3b8; margin-bottom: 24px; font-size: 0.95rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 1100px; margin: 0 auto; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+    .card h2 { color: #f1f5f9; font-size: 1.3rem; margin-bottom: 4px; }
+    .card p.role { color: #38bdf8; font-size: 0.85rem; margin-bottom: 16px; font-weight: 600; }
+    .btn { width: 100%; background: #0284c7; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-bottom: 8px; }
     .btn:hover { background: #0369a1; }
-    .btn-file { background: #16a34a; margin-top: 8px; }
-    .btn-file:hover { background: #15803d; }
-    #output-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 24px;
-      display: none;
-    }
-    #output-title { margin-top: 0; color: var(--accent-blue); }
-    .item-list { list-style: none; padding: 0; margin: 0; }
-    .item-card {
-      background: var(--bg-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 8px;
-    }
+    .btn.green { background: #16a34a; }
+    .btn.green:hover { background: #15803d; }
+    .task-list { margin-top: 12px; max-height: 250px; overflow-y: auto; display: none; background: #0f172a; border-radius: 6px; padding: 8px; }
+    .task-item { padding: 8px; border-bottom: 1px solid #334155; font-size: 0.85rem; color: #cbd5e1; }
+    .task-item:last-child { border-bottom: none; }
+    .loading { color: #f59e0b; font-size: 0.85rem; text-align: center; padding: 8px; }
+    .error { color: #ef4444; font-size: 0.85rem; text-align: center; padding: 8px; }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>Tappy Thing</h1>
-    <p>Aerus Command Hub & Role Portal</p>
-  </div>
+  <h1>Tappy Thing</h1>
+  <p class="sub">Aerus Command Hub & Role Portal</p>
 
   <div class="grid">
     <div class="card">
-      <div><h2>William</h2><p>Command & Strategy Lead</p></div>
-      <button class="btn" onclick="fetchBoardData('William')">View Active Tasks</button>
+      <h2>William</h2>
+      <p class="role">Command & Strategy Lead</p>
+      <button class="btn" onclick="fetchTasks('William')">View Active Tasks</button>
+      <div id="tasks-William" class="task-list"></div>
     </div>
-    <div class="card">
-      <div><h2>Chris</h2><p>Bench, Parts & Repair Lead</p></div>
-      <button class="btn" onclick="fetchBoardData('Chris')">View Active Tasks</button>
-      <input type="file" id="chris-file" accept="image/*" capture="environment" style="display:none">
-      <button class="btn btn-file" onclick="document.getElementById('chris-file').click()">Intake Photo</button>
-    </div>
-    <div class="card">
-      <div><h2>Mona</h2><p>Digital, Intakes & Audio Prompting</p></div>
-      <button class="btn" onclick="fetchBoardData('Mona')">View Active Tasks</button>
-    </div>
-    <div class="card">
-      <div><h2>Norby</h2><p>FOAS Entry & Customer Outreach</p></div>
-      <button class="btn" onclick="fetchBoardData('Norby')">View Active Tasks</button>
-    </div>
-  </div>
 
-  <div id="output-section">
-    <h3 id="output-title">Active Board Items</h3>
-    <ul class="item-list" id="item-list"></ul>
+    <div class="card">
+      <h2>Chris</h2>
+      <p class="role">Bench, Parts & Repair Lead</p>
+      <button class="btn" onclick="fetchTasks('Chris')">View Active Tasks</button>
+      <button class="btn green" onclick="alert('Intake Photo feature pending integration.')">Intake Photo</button>
+      <div id="tasks-Chris" class="task-list"></div>
+    </div>
+
+    <div class="card">
+      <h2>Mona</h2>
+      <p class="role">Digital, Intakes & Audio Prompting</p>
+      <button class="btn" onclick="fetchTasks('Mona')">View Active Tasks</button>
+      <div id="tasks-Mona" class="task-list"></div>
+    </div>
+
+    <div class="card">
+      <h2>Norby</h2>
+      <p class="role">FOAS Entry & Customer Outreach</p>
+      <button class="btn" onclick="fetchTasks('Norby')">View Active Tasks</button>
+      <div id="tasks-Norby" class="task-list"></div>
+    </div>
   </div>
 
   <script>
     const WORKER_URL = "https://square-wildflower-1c4a.william-f4c.workers.dev";
-    async function fetchBoardData(roleName) {
-      const outputSection = document.getElementById('output-section');
-      const outputTitle = document.getElementById('output-title');
-      const itemList = document.getElementById('item-list');
+    const BOARD_ID = 18424728273;
 
-      outputSection.style.display = 'block';
-      outputTitle.innerText = `Loading Board Data for ${roleName}...`;
-      itemList.innerHTML = '';
+    async function fetchTasks(role) {
+      const container = document.getElementById(`tasks-${role}`);
+      container.style.display = "block";
+      container.innerHTML = `<div class="loading">Loading Monday tasks...</div>`;
 
-      const query = `query {
-        boards(ids: 18424728273) {
-          items_page(limit: 50) {
-            items {
-              id
-              name
-            }
-          }
-        }
-      }`;
+      const graphqlQuery = {
+        query: `{ boards(ids: [${BOARD_ID}]) { items_page { items { id name column_values { id text } } } } }`
+      };
 
       try {
         const response = await fetch(WORKER_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: query })
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(graphqlQuery)
         });
 
-        const data = await response.json();
-        const items = data?.data?.boards?.[0]?.items_page?.items || [];
+        const result = await response.json();
 
-        outputTitle.innerText = `${roleName} — Active Board Items (${items.length})`;
+        if (result.errors) {
+          container.innerHTML = `<div class="error">API Error: ${result.errors[0].message}</div>`;
+          return;
+        }
+
+        const items = result.data?.boards[0]?.items_page?.items || [];
 
         if (items.length === 0) {
-          itemList.innerHTML = '<li class="item-card">No active items found on board 18424728273.</li>';
-        } else {
-          itemList.innerHTML = items.map(item => `
-            <li class="item-card">
-              <strong>${item.name}</strong> <span style="color:#94a3b8; font-size:0.85rem;">(ID: ${item.id})</span>
-            </li>
-          `).join('');
+          container.innerHTML = `<div class="task-item">No active items found.</div>`;
+          return;
         }
+
+        container.innerHTML = items.map(item => `<div class="task-item">📌 ${item.name}</div>`).join("");
+
       } catch (err) {
-        outputTitle.innerText = `Error Loading Items for ${roleName}`;
-        itemList.innerHTML = `<li class="item-card" style="color:#ef4444;">Error: ${err.message}</li>`;
+        container.innerHTML = `<div class="error">Connection failed. Check Worker endpoint.</div>`;
       }
     }
   </script>
