@@ -20,22 +20,12 @@
       background-color: var(--bg-dark);
       color: var(--text-light);
     }
-    .header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-    .header h1 {
-      margin: 0 0 8px 0;
-      font-size: 2rem;
-      color: var(--accent-blue);
-    }
-    .header p {
-      margin: 0;
-      color: var(--text-muted);
-    }
+    .header { text-align: center; margin-bottom: 32px; }
+    .header h1 { margin: 0 0 8px 0; font-size: 2rem; color: var(--accent-blue); }
+    .header p { margin: 0; color: var(--text-muted); }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
       max-width: 1200px;
       margin: 0 auto 32px auto;
@@ -49,15 +39,8 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    .card h2 {
-      margin: 0 0 8px 0;
-      font-size: 1.4rem;
-    }
-    .card p {
-      margin: 0 0 16px 0;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
+    .card h2 { margin: 0 0 4px 0; font-size: 1.4rem; }
+    .card p { margin: 0 0 16px 0; font-size: 0.9rem; color: var(--text-muted); }
     .btn {
       background: #0284c7;
       color: white;
@@ -68,16 +51,9 @@
       cursor: pointer;
       width: 100%;
     }
-    .btn:hover {
-      background: #0369a1;
-    }
-    .btn-file {
-      background: #16a34a;
-      margin-top: 8px;
-    }
-    .btn-file:hover {
-      background: #15803d;
-    }
+    .btn:hover { background: #0369a1; }
+    .btn-file { background: #16a34a; margin-top: 8px; }
+    .btn-file:hover { background: #15803d; }
     #output-section {
       max-width: 1200px;
       margin: 0 auto;
@@ -87,15 +63,8 @@
       padding: 24px;
       display: none;
     }
-    #output-title {
-      margin-top: 0;
-      color: var(--accent-blue);
-    }
-    .item-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+    #output-title { margin-top: 0; color: var(--accent-blue); }
+    .item-list { list-style: none; padding: 0; margin: 0; }
     .item-card {
       background: var(--bg-dark);
       border: 1px solid var(--border-color);
@@ -114,36 +83,21 @@
 
   <div class="grid">
     <div class="card">
-      <div>
-        <h2>William</h2>
-        <p>Command & Strategy Lead</p>
-      </div>
+      <div><h2>William</h2><p>Command & Strategy Lead</p></div>
       <button class="btn" onclick="fetchBoardData('William')">View Active Tasks</button>
     </div>
-
     <div class="card">
-      <div>
-        <h2>Chris</h2>
-        <p>Bench, Parts & Repair Lead</p>
-      </div>
+      <div><h2>Chris</h2><p>Bench, Parts & Repair Lead</p></div>
       <button class="btn" onclick="fetchBoardData('Chris')">View Active Tasks</button>
       <input type="file" id="chris-file" accept="image/*" capture="environment" style="display:none">
       <button class="btn btn-file" onclick="document.getElementById('chris-file').click()">Intake Photo</button>
     </div>
-
     <div class="card">
-      <div>
-        <h2>Mona</h2>
-        <p>Digital, Intakes & Audio Prompting</p>
-      </div>
+      <div><h2>Mona</h2><p>Digital, Intakes & Audio Prompting</p></div>
       <button class="btn" onclick="fetchBoardData('Mona')">View Active Tasks</button>
     </div>
-
     <div class="card">
-      <div>
-        <h2>Norby</h2>
-        <p>FOAS Entry & Customer Outreach</p>
-      </div>
+      <div><h2>Norby</h2><p>FOAS Entry & Customer Outreach</p></div>
       <button class="btn" onclick="fetchBoardData('Norby')">View Active Tasks</button>
     </div>
   </div>
@@ -154,6 +108,8 @@
   </div>
 
   <script>
+    const WORKER_URL = "https://square-wildflower-1c4a.william-f4c.workers.dev";
+
     async function fetchBoardData(roleName) {
       const outputSection = document.getElementById('output-section');
       const outputTitle = document.getElementById('output-title');
@@ -163,29 +119,21 @@
       outputTitle.innerText = `Loading Board Data for ${roleName}...`;
       itemList.innerHTML = '';
 
-      const mondayKey = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjY5NzE5MzAyNCwiYWFpIjoxMSwidWlkIjoxMTIxOTkyOTgsImlhZCI6IjIwMjYtMDgtMjZUMTM6Mjc6MjAuMDAwWiIsInBlciI6Im1lOndyaXRlIiwiYWN0aWQiOjM2Mjk5NzMyLCJyZ24iOiJ1c2UxIn0.3_nQYGCIHBoJ73l81zUfp_TXNRqSMKMuDyDo3EvqFKo";
-      const targetUrl = 'https://api.monday.com/v2';
-      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
-
       const query = `query {
         boards(ids: 18424728273) {
-          items_page(limit: 25) {
+          items_page(limit: 50) {
             items {
               id
               name
-              state
             }
           }
         }
       }`;
 
       try {
-        const response = await fetch(proxyUrl, {
+        const response = await fetch(WORKER_URL, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': mondayKey
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: query })
         });
 
