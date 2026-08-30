@@ -6,7 +6,7 @@
   <title>Tappy Thing - Aerus Command Hub</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; padding: 20px; min-height: 100vh; }
+    body { background-color: #0f172a; color: #f8fafc; padding: 20px; min-height: 100vh; position: relative; padding-bottom: 80px; }
     h1 { text-align: center; margin-bottom: 4px; color: #38bdf8; font-size: 1.8rem; }
     p.sub { text-align: center; color: #94a3b8; margin-bottom: 24px; font-size: 0.95rem; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 1100px; margin: 0 auto; }
@@ -37,7 +37,7 @@
       <p class="role">Command & Strategy Lead</p>
       <button class="btn" onclick="fetchTasks('William')">View Active Tasks</button>
       <a href="https://gemini.google.com" target="_blank" class="btn green">Fresh 🤵</a>
-      <a href="https://monday.com" target="_blank" class="btn gold">Sissy 💛</a>
+      <a href="https://towsonhealthyhomes.monday.com/boards/18424728273" target="_blank" class="btn gold">Sissy 💛</a>
       <div id="tasks-William" class="task-list"></div>
     </div>
 
@@ -96,20 +96,34 @@
         const items = result.data?.boards[0]?.items_page?.items || [];
 
         const filteredItems = items.filter(item => {
-          const colTexts = item.column_values.map(c => (c.text || '').toLowerCase());
-          const fullDataString = (item.name + " " + colTexts.join(" ")).toLowerCase();
+          let statusText = '';
+          let ownerText = '';
+
+          item.column_values.forEach(col => {
+            const val = (col.value || '').toLowerCase();
+            const txt = (col.text || '').toLowerCase();
+
+            if (col.id.includes('status') || txt.includes('completed') || txt.includes('intake') || txt.includes('ready wall')) {
+              statusText += ' ' + txt;
+            }
+            if (col.id.includes('person') || col.id.includes('owner') || val.includes('112521282') || txt.includes('chris') || txt.includes('norby')) {
+              ownerText += ' ' + txt + ' ' + val;
+            }
+          });
+
+          const fullString = (item.name + ' ' + statusText + ' ' + ownerText).toLowerCase();
 
           if (role === 'William') {
-            return !fullDataString.includes('completed') && !fullDataString.includes('done');
+            return !statusText.includes('completed') && !statusText.includes('done');
           }
           if (role === 'Chris') {
-            return fullDataString.includes('chris matthews') || fullDataString.includes('112521282');
+            return ownerText.includes('112521282') || ownerText.includes('chris matthews') || ownerText.includes('chris');
           }
           if (role === 'Mona') {
-            return fullDataString.includes('intake') || fullDataString.includes('ready wall');
+            return statusText.includes('intake') || statusText.includes('ready wall') || fullString.includes('intake') || fullString.includes('ready wall');
           }
           if (role === 'Norby') {
-            return fullDataString.includes('norby');
+            return ownerText.includes('norby') || fullString.includes('norby');
           }
           return true;
         });
